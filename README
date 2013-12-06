@@ -1,0 +1,108 @@
+This program estimates neighborhoods for SNPs given the zygotical information
+of a sample of individuals. It consists on 4 steps, from processing data to
+generating images to visualize data:
+
+  1. Neighborhood estimation.
+  2. Windows calculation.
+  3. Chi-square statistics calculation.
+  4. Figures generation.
+
+Each of these parts lie on its own folder. Inside each folder you can type
+`make` and `make run` to, respectivelly, compile and run each step.
+
+Please check the file named LICENSE in this folder for information on copying
+and distributing this program.
+
+For more information, contact the author in the following email address: ajb
+(at) ime.usp.br
+
+What follows is a description of input and output of each part of the program.
+
+==============================================================================
+
+1. Neighborhood estimation
+--------------------------
+
+Consumes:
+
+  - Data file with SNP zygotical information. The file should have one SNP per
+    line with individuals' zigotical values in columns. Each line should
+    respect the following format:
+
+        C POS NAME VAL1 VAL2 ... VALN
+
+    Where:
+    
+      - C is the chromosome where the SNP is located.
+      - POS is the SNP distance with respect to the beginning of the
+        chromosome.
+      - NAME is the chromosome name.
+      - VAL1 ... VALN is the preprocessed zygotical information for each
+        individual of the sample.
+
+    Note that SNPs should be ordered regarding the chromosome they lie on and
+    their position inside that chromosome in order to neighborhood calculation
+    make sense.
+
+    In our case, the data file lies in `/var/tmp/data-ordered.txt`, but you
+    can change this in the file `1.neighborhoods/Makefile`.
+
+Produces:
+
+  - results/neighborhoods.txt:
+    
+    Each line of this file contains the results of
+    left and right neighborhood for one SNP, as well as the ratio between the
+    likelihood of the chosen neighborhood and the likelihood of having no
+    neighborhood at all.
+
+
+2. Windows calculation
+----------------------
+
+Consumes:
+
+  - results/neighborhoods.txt
+
+Produces:
+
+  - results/windows-windows.txt:
+
+    This file contains the left and right limits of each calculated window,
+    one per line.
+
+
+3. Chi-square statistics calculation
+------------------------------------
+
+Consumes:
+
+  - results/windows-windows.txt
+  - results/neighborhoods.txt
+  - /var/tmp/data-ordered.txt
+  - data/affection.txt - file with one line per individual containing `1` if
+    the individual is affected by the disease (case) or `0` in case the
+    individual is not affected by the disease (control).
+
+Produces:
+
+  - results/chi-square-chi-square.txt
+
+    This file contains the chi-square statistics for each window regarding its
+    correlation with affectinonness of individuals.
+
+
+4. Figures generation
+---------------------
+
+Consumes:
+
+  - results/chi-square-chi-square.txt
+
+Produces
+
+  - 4.figures/img/snps-pvalue.ps
+  - 4.figures/img/snps-pvalue.png
+  
+  These figures will plot the results of chi-square calculation for each
+  window found in the previous steps.

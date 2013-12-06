@@ -1,0 +1,13 @@
+The program `neighborhoods` contained in this folder estimates neighborhoods
+sizes for each SNP, which consists on integer values for left and right
+neighborhoods and a ratio.
+
+1. Type `make` to compile.
+
+2. Type `make run` to run the neighborhood estimation. This will generate.
+
+Input
+-----
+
+The program takes as input an ASCII file containing a matrix with
+
